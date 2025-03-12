@@ -1,7 +1,7 @@
 from flask_sqlalchemy import SQLAlchemy
-from flask_migrate import Migrate
 from flask_jwt_extended import JWTManager
 
-db = SQLAlchemy()
-migrate = Migrate()
+#from depsec_models.database import db
+
+#db= depsec_models.database.db
 jwt = JWTManager()

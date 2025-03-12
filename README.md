@@ -32,3 +32,17 @@ Il restera à modifier encore :
   #autant d'endpoints qu'on veut...
   ```
 - Fichier requirements.txt dans le cas où vous utilisez des bibliothèques supplémentaires
+- Fichier .env avec les informations qui vont bien c'est à dire le bon URL pour la BDD etc
+
+## Exécution du serveur
+
+1. Démarrer l'application Flask
+```python
+flask run
+```
+Par défaut, l'API tourne sur http://127.0.0.1:5000/
+
+2. Exécution en mode debug
+```python
+FLASK_ENV=development flask run
+```

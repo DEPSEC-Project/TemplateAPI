@@ -1,24 +1,33 @@
 from flask import Blueprint, request, jsonify
 from flask_jwt_extended import create_access_token
-from app.extensions import db
+#from app.extensions import db
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
 import re
+from app.services.auth import verify_token
+from flask import current_app
+#from depsec_models.models import * #import des modèles depuis le package
 
-auth_bp = Blueprint("auth", __name__)
+test_bp = Blueprint("test", __name__)
 limiter = Limiter(get_remote_address, default_limits=["5 per minute"])
 
-@auth_bp.route('/toto', methods=['POST'])
+@test_bp.route('/toto', methods=['POST'])
 def toto():
-    data = request.json
-    return jsonify({"msg":""}), 201
+    if verify_token() == False and current_app.config["FLASK_ENV"] !="development" : #verifier que le token est valide ( a mettre dans chaque route) et qu'on est pas en environnement de dev
+        return jsonify({"msg": "Token invalide / Utilisateur non autorisé"}), 401
 
-@auth_bp.route('/tutu', methods=['POST'])
-@limiter.limit("5 per minute") 
+    data = request.json
+    return jsonify({"msg":"blabla cool"}), 200
+
+@test_bp.route('/tutu', methods=['POST'])
+@limiter.limit("5 per minute") #exemple pouur limiter le nombre de requetes
 def tutu():
+    if verify_token() == False and current_app.config["FLASK_ENV"] !="development" : #verifier que le token est valide ( a mettre dans chaque route) et qu'on est pas en environnement de dev
+        return jsonify({"msg": "Token invalide / Utilisateur non autorisé"}), 401
+
     data = request.json
 
-    return jsonify({"msg": ""}), 401
+    return jsonify({"msg": "blabla"}), 401
 
 
 
