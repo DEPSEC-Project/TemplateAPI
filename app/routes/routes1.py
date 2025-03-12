@@ -1,11 +1,8 @@
 from flask import Blueprint, request, jsonify
 from flask_jwt_extended import create_access_token
-from werkzeug.security import generate_password_hash, check_password_hash
-from app.models import User
 from app.extensions import db
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
-from email_validator import validate_email, EmailNotValidError
 import re
 
 auth_bp = Blueprint("auth", __name__)
