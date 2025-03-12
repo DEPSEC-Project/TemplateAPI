@@ -30,3 +30,4 @@ Il restera à modifier encore :
     return jsonify({"msg": ""}), 401
   #autant d'endpoints qu'on veut...
   ```
+- Fichier requirements.txt dans le cas où vous utilisez des bibliothèques supplémentaires
