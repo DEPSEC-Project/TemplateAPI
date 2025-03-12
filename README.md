@@ -1,5 +1,5 @@
 # DEPSEC-TemplateAPI
-Template d'API flask qui correspond à l'architecture d'APIs définie pour l'ensemple du projet DEPSEC
+Template d'API flask qui correspond à l'architecture d'APIs définie pour l'enssemble du projet DEPSEC
 
 ## Comment s'en servir ? 
 Tout d'abord, un dépot template sert de modèle à un nouveau template, dans les faits, un nouveau template copiera l'ensemble du modèle, sans conserver l'historique git du dépot, à l'inverse d'un fork, pour ce faire en premier lieu :
