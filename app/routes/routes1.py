@@ -11,7 +11,7 @@ from flask import current_app
 test_bp = Blueprint("test", __name__)
 limiter = Limiter(get_remote_address, default_limits=["5 per minute"])
 
-@test_bp.route('/toto', methods=['POST'])
+@test_bp.route('/toto', methods=['GET'])
 def toto():
     if verify_token() == False and current_app.config["FLASK_ENV"] !="development" : #verifier que le token est valide ( a mettre dans chaque route) et qu'on est pas en environnement de dev
         return jsonify({"msg": "Token invalide / Utilisateur non autorisé"}), 401
