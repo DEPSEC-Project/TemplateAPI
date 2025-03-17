@@ -38,10 +38,10 @@ jobs:
 
       - name: Test des fonctions de l'application
         run: |
-          python -m pytest tests/test_app.py
+          python -m pytest test/test_app.py
 
       - name: Test des endpoints de l'application
         run : |
-          python -m pytest tests/test_endpoints.py
+          python -m pytest test/test_endpoints.py
       
 
