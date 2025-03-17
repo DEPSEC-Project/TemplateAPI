@@ -1,22 +1,26 @@
 from flask import Flask,jsonify
-from app.config import Config
-from app.extensions import db, migrate, jwt
+from app.config import *
+from app.extensions import jwt
+import os 
+from dotenv import load_dotenv
 
+__version__ = "0.0.0" # géré automatiquement par la CI
+
+load_dotenv(".env")
 def create_app():
     app = Flask(__name__)
-    app.config.from_object(Config)
 
-    db.init_app(app)
-    migrate.init_app(app, db)
+    app.config.from_object(config[os.getenv("FLASK_ENV") or "development"])#en mode dev par défaut si rien de spécifié
+
+    #db.init_app(app)
     jwt.init_app(app)
 
     @jwt.unauthorized_loader   # gérer le cas ou le client n'est pas authentifié
     def unauthorized_callback(callback):
         return jsonify({"msg": "Token invalide ou manquant. veuillez vous authentifier."}), 401
 
-    from app.routes.routes1 import auth_bp
+    from app.routes.routes1 import test_bp
 
-    app.register_blueprint(auth_bp, url_prefix='/auth')
-    app.register_blueprint(routes_bp, url_prefix='/blabla')
+    app.register_blueprint(test_bp, url_prefix='/test')
 
     return app

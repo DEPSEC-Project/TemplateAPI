@@ -1,5 +1,7 @@
 flask
 flask-limiter
 Flask-SQLAlchemy
-Flask-Migrate
 Flask-JWT-Extended
+pytest
+dotenv
+requests
