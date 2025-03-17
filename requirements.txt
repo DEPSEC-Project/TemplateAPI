@@ -3,3 +3,4 @@ flask-limiter
 Flask-SQLAlchemy
 Flask-JWT-Extended
 pytest
+dotenv
