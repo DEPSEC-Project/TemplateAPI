@@ -52,16 +52,11 @@ jobs:
             PATCH=$(echo "$CURRENT_VERSION" | cut -d'.' -f3)
             NEW_VERSION="v$MAJOR.$((MINOR + 1)).0"
           elif [[ "$BRANCH_NAME" == hotfix/* ]]; then
-            MAJOR=$(echo "$CURRENT_VERSION" | cut -d'.' -f1 | sed 's/v//')
-            MINOR=$(echo "$CURRENT_VERSION" | cut -d'.' -f2)
-            PATCH=$(echo "$CURRENT_VERSION" | cut -d'.' -f3)
-            NEW_VERSION="v$MAJOR.$MINOR.$((PATCH + 1))"
+            HOTFIX_VERSION=$(echo "$BRANCH_NAME" | sed 's/hotfix\///')
+            NEW_VERSION="$HOTFIX_VERSION"
           elif [[ "$BRANCH_NAME" == release/* ]]; then
-            CURRENT_VERSION=$(echo "$BRANCH_NAME" | cur -d'.' -f1 | sed 's/release//')
-            MAJOR=$(echo "$CURRENT_VERSION" | cut -d'.' -f1 | sed 's/v//')
-            MINOR=$(echo "$CURRENT_VERSION" | cut -d'.' -f2)
-            PATCH=$(echo "$CURRENT_VERSION" | cut -d'.' -f3)
-            NEW_VERSION="v$MAJOR.$MINOR.$((PATCH + 1))"
+            RELEASE_VERSION=$(echo "$BRANCH_NAME" | sed 's/release\///')
+            NEW_VERSION="$RELEASE_VERSION"
           else
             echo "Branche non reconnue, version inchangée."
             NEW_VERSION="$CURRENT_VERSION"
