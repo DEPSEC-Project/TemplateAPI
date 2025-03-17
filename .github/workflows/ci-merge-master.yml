@@ -40,41 +40,31 @@ jobs:
         id: test_endpoints
         run : |
           python -m pytest tests/test_endpoints.py
+  release:
+    runs-on: ubuntu-latest
+    needs: build_and_test
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - name: Checkout le code
+        uses: actions/checkout@v3
 
-      - name: Déterminer la nouvelle version
-        id: version
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.11
+
+      - name: Installer le package python semantic release
         run: |
-          BRANCH_NAME="${{ github.head_ref }}"
-          CURRENT_VERSION=$(git describe --tags --abbrev=0)
-          if [[ "$BRANCH_NAME" == "develop" ]]; then
-            MAJOR=$(echo "$CURRENT_VERSION" | cut -d'.' -f1 | sed 's/v//')
-            MINOR=$(echo "$CURRENT_VERSION" | cut -d'.' -f2)
-            PATCH=$(echo "$CURRENT_VERSION" | cut -d'.' -f3)
-            NEW_VERSION="v$MAJOR.$((MINOR + 1)).0"
-          elif [[ "$BRANCH_NAME" == hotfix/* ]]; then
-            HOTFIX_VERSION=$(echo "$BRANCH_NAME" | sed 's/hotfix\///')
-            NEW_VERSION="$HOTFIX_VERSION"
-          elif [[ "$BRANCH_NAME" == release/* ]]; then
-            RELEASE_VERSION=$(echo "$BRANCH_NAME" | sed 's/release\///')
-            NEW_VERSION="$RELEASE_VERSION"
-          else
-            echo "Branche non reconnue, version inchangée."
-            NEW_VERSION="$CURRENT_VERSION"
-          fi
-          echo "NEW_VERSION=$NEW_VERSION" >> $GITHUB_OUTPUT
-          
-      - name: Créer une nouvelle release
-        uses: actions/create-release@v1
-        if: ${{ steps.version.outputs.NEW_VERSION != '' }}
+          python -m pip install --upgrade pip
+          pip install python-semantic-release
+
+      - name: Vérification des commits # pour forcer les gens à faire des bons commits
+        uses: wagoid/commitlint-github-action@v5
+
+      - name: Générer une nouvelle version
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{ steps.version.outputs.NEW_VERSION }}
-          release_name: Release ${{ steps.version.outputs.NEW_VERSION }}
-          body: |
-            Nouvelle version générée automatiquement.
-          draft: false
-          prerelease: false
-        
-          
-      
+        run: semantic-release publish
+  
+

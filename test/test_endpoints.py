@@ -1,5 +1,5 @@
 import pytest
-from my_project import create_app
+from app import create_app
 
 @pytest.fixture()
 def app():
@@ -7,12 +7,7 @@ def app():
     app.config.update({
         "TESTING": True,
     })
-
-
-
     yield app
-
-
 
 @pytest.fixture()
 def client(app):

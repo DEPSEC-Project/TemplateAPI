@@ -1,4 +1,4 @@
-name: Template Industrialisation workflow pour les merges de feature/* vers develop
+name: Template Industrialisation workflow pour les merges de feature/* vers develop (Sert principalement pour les tests)
 
 on:
   pull_request:

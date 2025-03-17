@@ -4,6 +4,8 @@ from app.extensions import jwt
 import os 
 from dotenv import load_dotenv
 
+__version__ = "0.0.0" # géré automatiquement par la CI
+
 load_dotenv(".env")
 def create_app():
     app = Flask(__name__)
