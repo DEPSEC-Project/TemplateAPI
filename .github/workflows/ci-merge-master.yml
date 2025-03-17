@@ -23,7 +23,8 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
-            - name: Définir les variables d'environnement
+          
+      - name: Définir les variables d'environnement
         run: |
           echo "FLASK_ENV=testing" >> $GITHUB_ENV
           echo "JWT_SECRET_KEY=${{ secrets.JWT_SECRET_KEY }}" >> $GITHUB_ENV
@@ -31,10 +32,54 @@ jobs:
           echo "FLASK_PORT=5000" >> $GITHUB_ENV
 
       - name: Test des fonctions de l'application
+        id: test_app
         run: |
           python -m pytest tests/test_app.py
 
       - name: Test des endpoints de l'application
+        id: test_endpoints
         run : |
           python -m pytest tests/test_endpoints.py
-      - name: Nouvelle release
+
+      - name: Déterminer la nouvelle version
+        id: version
+        run: |
+          BRANCH_NAME="${{ github.head_ref }}"
+          CURRENT_VERSION=$(git describe --tags --abbrev=0)
+          if [[ "$BRANCH_NAME" == "develop" ]]; then
+            MAJOR=$(echo "$CURRENT_VERSION" | cut -d'.' -f1 | sed 's/v//')
+            MINOR=$(echo "$CURRENT_VERSION" | cut -d'.' -f2)
+            PATCH=$(echo "$CURRENT_VERSION" | cut -d'.' -f3)
+            NEW_VERSION="v$MAJOR.$((MINOR + 1)).0"
+          elif [[ "$BRANCH_NAME" == hotfix/* ]]; then
+            MAJOR=$(echo "$CURRENT_VERSION" | cut -d'.' -f1 | sed 's/v//')
+            MINOR=$(echo "$CURRENT_VERSION" | cut -d'.' -f2)
+            PATCH=$(echo "$CURRENT_VERSION" | cut -d'.' -f3)
+            NEW_VERSION="v$MAJOR.$MINOR.$((PATCH + 1))"
+          elif [[ "$BRANCH_NAME" == release/* ]]; then
+            CURRENT_VERSION=$(echo "$BRANCH_NAME" | cur -d'.' -f1 | sed 's/release//')
+            MAJOR=$(echo "$CURRENT_VERSION" | cut -d'.' -f1 | sed 's/v//')
+            MINOR=$(echo "$CURRENT_VERSION" | cut -d'.' -f2)
+            PATCH=$(echo "$CURRENT_VERSION" | cut -d'.' -f3)
+            NEW_VERSION="v$MAJOR.$MINOR.$((PATCH + 1))"
+          else
+            echo "Branche non reconnue, version inchangée."
+            NEW_VERSION="$CURRENT_VERSION"
+          fi
+          echo "NEW_VERSION=$NEW_VERSION" >> $GITHUB_OUTPUT
+          
+      - name: Créer une nouvelle release
+        uses: actions/create-release@v1
+        if: ${{ steps.version.outputs.NEW_VERSION != '' }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ steps.version.outputs.NEW_VERSION }}
+          release_name: Release ${{ steps.version.outputs.NEW_VERSION }}
+          body: |
+            Nouvelle version générée automatiquement.
+          draft: false
+          prerelease: false
+        
+          
+      
