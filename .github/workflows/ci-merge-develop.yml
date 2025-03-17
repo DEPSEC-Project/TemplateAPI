@@ -5,6 +5,8 @@ on:
     branches: [ "feature/**" ]
   pull_request_target:
     branches: [ "develop" ]  
+  workflow_dispatch:
+  
 jobs:
   build_and_test:
     runs-on: ubuntu-latest 
@@ -27,7 +29,7 @@ jobs:
 
       - name: Définir les variables d'environnement
         run: |
-          echo "FLASK_ENV=develop" >> $GITHUB_ENV
+          echo "FLASK_ENV=development" >> $GITHUB_ENV
           echo "JWT_SECRET_KEY=${{ secrets.JWT_SECRET_KEY }}" >> $GITHUB_ENV
           echo "TEST_DATABASE_URL=${{ secrets.TEST_DATABASE_URL }}" >> $GITHUB_ENV
           echo "FLASK_PORT=5000" >> $GITHUB_ENV
