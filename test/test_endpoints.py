@@ -17,3 +17,6 @@ def client(app):
 @pytest.fixture()
 def runner(app):
     return app.test_cli_runner()
+
+def test_app_creation(app):
+    assert app is not None
