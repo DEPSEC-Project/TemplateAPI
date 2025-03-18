@@ -21,6 +21,7 @@ jobs:
       - name: Checkout le code
         uses: actions/checkout@v3
 
+
       - name: Set up Python ${{ matrix.python-version }} # test de plusieurs versions python
         uses: actions/setup-python@v4
         with:
@@ -53,7 +54,8 @@ jobs:
     steps:
       - name: Checkout le code
         uses: actions/checkout@v3
-
+        with:
+          fetch-depth: 0  # pour récuperer la branche active pour que semanic-release ne prenne pas la branche détachée du checkout par defaut
 
       - name: Set up Python
         uses: actions/setup-python@v4
