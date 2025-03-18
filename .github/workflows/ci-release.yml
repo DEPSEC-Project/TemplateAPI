@@ -11,7 +11,7 @@ permissions:
   pull-requests: write  # pour gérer les PR
 
 jobs:
-  initial_setup:
+  workflow_push_on_main:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout du code
@@ -51,24 +51,16 @@ jobs:
           git push origin develop
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-  release:
-    runs-on: ubuntu-latest
-    needs: initial_setup
-    if: needs.initial_setup.outputs.is_initial_commit == 'false'
-    steps:
-      - name: Checkout du code
-        uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-
       - name: Installer le package python-semantic-release
+        if: env.is_initial_commit == 'false'
         run: |
-          python -m pip install --upgrade pip
-          pip install python-semantic-release
-
+            python -m pip install --upgrade pip
+            pip install python-semantic-release
+  
       - name: Générer une nouvelle version
+        if: env.is_initial_commit == 'false'
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          semantic-release publish
+            semantic-release publish
+  

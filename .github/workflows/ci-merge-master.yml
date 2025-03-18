@@ -19,7 +19,6 @@ jobs:
       - name: Checkout le code
         uses: actions/checkout@v3
 
-
       - name: Set up Python ${{ matrix.python-version }} # test de plusieurs versions python
         uses: actions/setup-python@v4
         with:
