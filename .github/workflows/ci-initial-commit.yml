@@ -1,0 +1,38 @@
+name: Initial Commit - Modificiation du texte du commit et création de la release minimale.
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  initial_setup:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout du code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 2  
+
+      - name: Vérifier s'il s'agit du commit initial
+        id: check_initial_commit
+        run: |
+          if [ $(git rev-list --count HEAD) -eq 1 ]; then
+            echo "is_initial_commit=true" >> $GITHUB_ENV
+          else
+            echo "is_initial_commit=false" >> $GITHUB_ENV
+          fi
+
+      - name: Modifier le message du commit initial
+        if: env.is_initial_commit == 'true'
+        run: |
+          git config user.name "CI GITHUB"
+          git config user.email "${{ github.actor }}@users.noreply.github.com"
+          git commit --amend -m "chore: initial commit"
+          git push --force
+
+      - name: Créer un tag pour le commit initial
+        if: env.is_initial_commit == 'true'
+        run: |
+          git tag v1.0.0
+          git push origin v1.0.0
