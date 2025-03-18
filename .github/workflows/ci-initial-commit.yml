@@ -36,3 +36,13 @@ jobs:
         run: |
           git tag v1.0.0
           git push origin v1.0.0
+
+      - name: Créer la branche develop
+        if: env.is_initial_commit == 'true'
+        run: |
+          git config --global user.name "CI GITHUB"
+          git config --global user.email "${{ github.actor }}@users.noreply.github.com"
+          git checkout -b develop
+          git push origin develop
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }
