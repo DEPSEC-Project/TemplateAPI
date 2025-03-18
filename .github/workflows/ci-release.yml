@@ -1,0 +1,25 @@
+name: Release Workflow
+
+on:
+  push:
+    branches:
+      - master  
+
+permissions:
+  contents: write  # pour release et tag
+  issues: write    # pourcommenter les issue
+  pull-requests: write  # pour gerer les pr 
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout du code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0  
+
+      - name: Exécuter Python Semantic Release
+        uses: python-semantic-release/[email protected]
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
