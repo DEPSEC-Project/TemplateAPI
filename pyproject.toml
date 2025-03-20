@@ -1,10 +1,10 @@
 [project]
 name = "TemplateAPI" # achanger
-version = "1.0.0"
+version = "1.0.1"
 description = "Template d'API pour le projet DEPSEC" # achanger
 
 [tool.semantic_release]
-version_variable = ["app/__init__.py:__version__","pyproject.toml:version"]
+version_variable = ["app/__init__.py:__version__"]
 branch = "master"
 changelog_file = "CHANGELOG.md"
 commit_message = "chore(release): bump version to {version}"
