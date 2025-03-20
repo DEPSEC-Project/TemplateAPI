@@ -4,7 +4,7 @@ from app.extensions import jwt
 import os 
 from dotenv import load_dotenv
 
-__version__ = "1.0.0" # géré automatiquement par la CI
+__version__ = "1.0.1" # géré automatiquement par la CI
 
 load_dotenv(".env")
 def create_app():
