@@ -5,3 +5,4 @@ Flask-JWT-Extended
 pytest
 dotenv
 requests
+python-semantic-release

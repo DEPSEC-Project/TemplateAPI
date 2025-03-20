@@ -59,8 +59,9 @@ jobs:
   
       - name: Générer une nouvelle version
         if: env.is_initial_commit == 'false'
-        env:
-            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
             semantic-release publish
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
   

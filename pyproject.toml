@@ -1,6 +1,5 @@
 [project]
 name = "TemplateAPI" # achanger
-version = "1.0.1"
 description = "Template d'API pour le projet DEPSEC" # achanger
 
 [tool.semantic_release]
