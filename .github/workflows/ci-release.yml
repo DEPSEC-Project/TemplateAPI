@@ -39,8 +39,8 @@ jobs:
       - name: Créer un tag pour le commit initial
         if: env.is_initial_commit == 'true'
         run: |
-          git tag v1.0.0
-          git push origin v1.0.0
+          git tag v0.1.0
+          git push origin v0.1.0
 
       - name: Créer la branche develop
         if: env.is_initial_commit == 'true'
@@ -51,17 +51,3 @@ jobs:
           git push origin develop
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: Installer le package python-semantic-release
-        if: env.is_initial_commit == 'false'
-        run: |
-            python -m pip install --upgrade pip
-            pip install python-semantic-release
-  
-      - name: Générer une nouvelle version
-        if: env.is_initial_commit == 'false'
-        run: |
-            semantic-release publish
-        env:
-          GH_TOKEN: ${{ secrets.GH_TOKEN }}
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
-  
