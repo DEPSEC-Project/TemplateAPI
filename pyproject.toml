@@ -12,7 +12,7 @@ version_source = "commit"
 upload_to_pypi = false # on upload pas nos packages
 
 
-tag_format = "v{version}" #tag git automatique vX.Y.Z
+tag_format = "v{version}" #tag git automatique pour semantic-release
 
 changelog_sections = ["Features", "Bug Fixes", "Documentation", "Tests","CI/CD"]
 upload_to_release = true # release auto sur github
